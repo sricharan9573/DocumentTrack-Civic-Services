@@ -11,6 +11,21 @@ env = { "CI" = "true" }
 [workflows]
 runButton = "Project"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+name = "Frontend"
+isSource = false
+buildPath = "artifacts/document-track"
+program = "pnpm"
+args = ["--filter", "@workspace/document-track", "run", "dev"]
+
+[workflows.workflow.tasks.env]
+PORT = "5173"
+BASE_PATH = "/"
+
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true
