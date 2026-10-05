@@ -103,6 +103,7 @@ export function ServiceDetailPage() {
               label={service.portalActionLabel}
               disabledLabel={service.portalActionLabel}
               className="btn btn-primary"
+              service={service}
               testId={`button-apply-${service.id}`}
             />
             <Link
@@ -124,6 +125,7 @@ export function ServiceDetailPage() {
               label="Open Official Portal"
               disabledLabel={service.portalActionLabel}
               className="btn btn-secondary"
+              service={service}
               testId={`button-open-portal-${service.id}`}
             />
           </div>
