@@ -1,0 +1,15 @@
+export type ApplicationStatus = 'Draft'|'Submitted'|'Under Verification'|'Document Verification'|'Under Review'|'Approved'|'Rejected'|'Certificate Ready';
+export type StatusEvent = { id:string; status:ApplicationStatus; remarks:string; changedAt:string };
+export type Application = {
+  id:string; serviceId:string; applicationNumber:string; applicationDate:string; status:ApplicationStatus;
+  expectedCompletionDate:string; notes:string; officialPortalUrl:string; trackingUrl:string;
+  statusHistory:StatusEvent[]; createdAt:string; updatedAt:string;
+};
+const history = (id:string, items:[ApplicationStatus,string,string][]):StatusEvent[] => items.map((i,n)=>({id:`${id}-h${n}`,status:i[0],remarks:i[1],changedAt:i[2]}));
+export const demoApplications:Application[] = [
+ {id:'app-income-839201',serviceId:'income-certificate',applicationNumber:'INC-2026-839201',applicationDate:'2026-10-05',status:'Under Verification',expectedCompletionDate:'2026-10-20',notes:'Keep a copy of the acknowledgement for reference.',officialPortalUrl:'',trackingUrl:'',createdAt:'2026-10-05T09:00:00.000Z',updatedAt:'2026-10-06T09:30:00.000Z',statusHistory:history('income',[['Draft','Record created in DocumentTrack.','2026-10-05T08:40:00.000Z'],['Submitted','Citizen entered the reference after submitting through an official channel.','2026-10-05T09:00:00.000Z'],['Under Verification','Status manually noted by you.','2026-10-06T09:30:00.000Z']])},
+ {id:'app-driving-782193',serviceId:'driving-licence',applicationNumber:'DL-2026-782193',applicationDate:'2026-09-28',status:'Approved',expectedCompletionDate:'',notes:'Please check the official channel for collection instructions.',officialPortalUrl:'',trackingUrl:'',createdAt:'2026-09-28T10:00:00.000Z',updatedAt:'2026-10-04T10:00:00.000Z',statusHistory:history('driving',[['Submitted','Added by you.','2026-09-28T10:00:00.000Z'],['Approved','Status checked and entered by you.','2026-10-04T10:00:00.000Z']])},
+ {id:'app-caste-182739',serviceId:'caste-certificate',applicationNumber:'CAST-2026-182739',applicationDate:'2026-10-02',status:'Submitted',expectedCompletionDate:'',notes:'',officialPortalUrl:'',trackingUrl:'',createdAt:'2026-10-02T11:15:00.000Z',updatedAt:'2026-10-02T11:15:00.000Z',statusHistory:history('caste',[['Submitted','Added by you.','2026-10-02T11:15:00.000Z']])},
+ {id:'app-birth-492011',serviceId:'birth-certificate',applicationNumber:'BRC-2026-492011',applicationDate:'2026-09-18',status:'Certificate Ready',expectedCompletionDate:'',notes:'Check with the issuing office for next steps.',officialPortalUrl:'',trackingUrl:'',createdAt:'2026-09-18T07:00:00.000Z',updatedAt:'2026-10-01T14:00:00.000Z',statusHistory:history('birth',[['Submitted','Added by you.','2026-09-18T07:00:00.000Z'],['Certificate Ready','Status noted by you after checking separately.','2026-10-01T14:00:00.000Z']])}
+];
+export const statuses:ApplicationStatus[]=['Draft','Submitted','Under Verification','Document Verification','Under Review','Approved','Rejected','Certificate Ready'];

@@ -1,0 +1,44 @@
+import { type ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ErrorBoundary } from '@/components/error-boundary';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
+import { AppProvider } from './context/AppContext';
+import { AppShell } from './components/shared';
+import {
+  ApplicationDetailPage, ApplicationFormPage, ApplicationsPage, DashboardPage,
+  HomePage, HowItWorksPage, LoginPage, NotFoundPage, ProfilePage, ServiceDetailPage,
+  ServicesPage, SignupPage,
+} from './pages/DocumentPages';
+
+const queryClient = new QueryClient();
+
+function Router() {
+  return <RoutedErrorBoundary><AppShell><Switch>
+    <Route path="/" component={HomePage}/>
+    <Route path="/services" component={ServicesPage}/>
+    <Route path="/services/:serviceId" component={ServiceDetailPage}/>
+    <Route path="/login" component={LoginPage}/>
+    <Route path="/signup" component={SignupPage}/>
+    <Route path="/dashboard" component={DashboardPage}/>
+    <Route path="/applications" component={ApplicationsPage}/>
+    <Route path="/applications/add" component={ApplicationFormPage}/>
+    <Route path="/applications/:applicationId/edit" component={ApplicationFormPage}/>
+    <Route path="/applications/:applicationId" component={ApplicationDetailPage}/>
+    <Route path="/how-it-works" component={HowItWorksPage}/>
+    <Route path="/profile" component={ProfilePage}/>
+    <Route component={NotFoundPage}/>
+  </Switch></AppShell></RoutedErrorBoundary>;
+}
+function RoutedErrorBoundary({ children }: { children: ReactNode }) {
+  const [location] = useLocation();
+  return <ErrorBoundary resetKey={location}>{children}</ErrorBoundary>;
+}
+function App() {
+  return <QueryClientProvider client={queryClient}><TooltipProvider><AppProvider>
+    <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}><Router/></WouterRouter>
+    <Toaster/>
+  </AppProvider></TooltipProvider></QueryClientProvider>;
+}
+export default App;

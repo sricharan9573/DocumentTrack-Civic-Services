@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "DocumentTrack"
+description = "A citizen-side dashboard for discovering Indian government services, reviewing requirements, and organizing application references with user-managed status tracking."
+version = "1.0.0"
+id = "artifacts/document-track"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22117
+
+[services.development]
+run = "pnpm --filter @workspace/document-track run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/document-track", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/document-track/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22117"
+BASE_PATH = "/"

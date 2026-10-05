@@ -1,6 +1,6 @@
-# [Project name]
+# DocumentTrack
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+DocumentTrack helps citizens discover government-service requirements and organize their own application references and manually updated statuses.
 
 ## Run & Operate
 
@@ -22,15 +22,21 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/document-track/` — responsive React + Vite application
+- `artifacts/api-server/` — shared API service; not used by DocumentTrack's current frontend
+- `lib/` — shared API/database packages; not used for DocumentTrack's local demo data
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- DocumentTrack is a citizen-side organizer only. Citizens submit and verify applications through government portals; the app does not submit, scrape, or automatically track them.
+- Demo records and mock-mode session state are local to the browser and structured for a future Supabase integration. No backend or government API is currently connected.
+- Do not present unverified government URLs as official links; leave these unavailable until verified.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Service discovery, eligibility and document guidance, fee/processing estimates, and official-portal access.
+- Personal application dashboard with reference numbers, manual status history, timelines, reminders, search, filters, and profile settings.
+- Statuses and notifications are user-managed/demo data, not messages or updates from government systems.
 
 ## User preferences
 

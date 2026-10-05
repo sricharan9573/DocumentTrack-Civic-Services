@@ -1,0 +1,1343 @@
+Build a complete, polished, production-style frontend web application called:
+
+"DocumentTrack"
+Tagline: "One place to discover, manage and track your government applications."
+
+IMPORTANT:
+This is a hackathon project based on the problem statement:
+"Build a platform where citizens can track applications for certificates, licenses, permits, and other government services."
+
+IMPORTANT ARCHITECTURE DECISION:
+We currently DO NOT have access to government APIs.
+
+Therefore:
+- DO NOT create fake government API integrations.
+- DO NOT claim that our platform directly submits applications to government systems.
+- DO NOT scrape government websites.
+- DO NOT pretend government status is automatically retrieved.
+- The actual application is submitted by the citizen through the official government portal.
+- Our platform acts as a citizen-side application management and tracking dashboard.
+- Every service should have an "Apply on Official Portal" button.
+- Every application should have a "Track on Official Portal" button where an official tracking URL is available.
+- Users can manually update the status in our application after checking the official government portal.
+- Later, Supabase will be connected as the real backend/database.
+- For NOW, build the complete frontend using realistic mock data/local state so the UI is fully functional.
+- Structure the code cleanly so Supabase can be connected later without rebuilding the UI.
+
+==================================================
+1. TECHNOLOGY STACK
+==================================================
+
+Use:
+
+- React
+- Vite
+- JavaScript or TypeScript
+- Tailwind CSS
+- React Router
+- Lucide React icons or another lightweight icon library
+- No unnecessary libraries
+- No backend for now
+- No Supabase connection for now
+- Use mock data/local state
+
+Make the application responsive:
+- Desktop
+- Tablet
+- Mobile
+
+The code should be component-based and maintainable.
+
+==================================================
+2. PRODUCT CONCEPT
+==================================================
+
+DocumentTrack helps citizens manage the complete journey of government applications.
+
+The platform provides:
+
+1. Government service discovery
+2. Service information
+3. Eligibility information
+4. Required document checklist
+5. Application fee information
+6. Expected processing time
+7. Official government portal link
+8. Application tracking
+9. Application reference number storage
+10. Application status timeline
+11. Manual status updates
+12. Application reminders/important dates
+13. Personal dashboard
+14. Search and filtering
+15. Profile/settings
+
+The platform DOES NOT process government applications itself.
+
+Correct user journey:
+
+Citizen
+   ↓
+DocumentTrack
+   ↓
+Find Government Service
+   ↓
+View requirements
+   ↓
+Click "Apply on Official Portal"
+   ↓
+Official Government Website
+   ↓
+Citizen submits application
+   ↓
+Citizen receives Application/Reference Number
+   ↓
+Citizen returns to DocumentTrack
+   ↓
+Adds Application Number
+   ↓
+Tracks application from DocumentTrack
+   ↓
+Clicks "Track on Official Portal" whenever they want to verify the real government status
+   ↓
+Manually updates status in DocumentTrack
+
+==================================================
+3. DESIGN DIRECTION
+==================================================
+
+Create a modern, professional Indian government/public-service inspired interface.
+
+The UI should NOT look like a generic AI dashboard.
+
+Design should communicate:
+
+- Trust
+- Government/public service
+- Simplicity
+- Accessibility
+- Reliability
+- Professionalism
+
+Use a clean visual system inspired by Indian public services.
+
+Primary colors:
+- Deep Navy: #0B1F3A
+- Government Blue: #123C73
+- Saffron accent: #FF9933
+- White: #FFFFFF
+- Light background: #F5F7FA
+- Dark text: #172033
+- Muted text: #667085
+- Success: #138808
+- Warning: #F59E0B
+- Danger: #D32F2F
+
+Do not overuse saffron.
+Use it mainly for accents, active states, highlights and small visual details.
+
+Use:
+- Rounded cards
+- Subtle shadows
+- Clean borders
+- Professional typography
+- Good spacing
+- Clear hierarchy
+- Accessible contrast
+- Smooth but subtle animations
+
+Avoid:
+- Excessive gradients
+- Neon colors
+- Excessive glassmorphism
+- Huge animations
+- Gaming-style UI
+- Overly futuristic UI
+- Fake government logos
+- Fake government seals
+
+==================================================
+4. GLOBAL NAVIGATION
+==================================================
+
+Create a responsive navbar.
+
+Desktop:
+
+Left:
+🇮🇳 DocumentTrack
+
+Navigation:
+- Home
+- Services
+- My Applications
+- How It Works
+- About
+
+Right:
+- Search icon/button
+- Notifications
+- Profile
+- Login/Sign Up if logged out
+
+Mobile:
+- Logo
+- Menu button
+- Slide-out/mobile navigation
+
+Navbar should remain consistent across pages.
+
+==================================================
+5. LANDING PAGE
+==================================================
+
+Create a highly polished landing page.
+
+Hero section:
+
+Small badge:
+"🇮🇳 Citizen Government Services"
+
+Heading:
+
+"Manage Your Government Applications in One Place"
+
+Supporting text:
+
+"Discover government services, understand application requirements, access official portals, and keep track of all your applications from one simple dashboard."
+
+Primary button:
+"Explore Services"
+
+Secondary button:
+"Track an Application"
+
+Hero visual:
+Create a dashboard preview/card showing example applications.
+
+Example:
+
+Income Certificate
+Application ID: INC-2026-839201
+Status: Under Verification
+
+Driving Licence
+Application ID: DL-2026-782193
+Status: Approved
+
+Use subtle visual animation.
+
+Below hero:
+
+Stats section:
+
+"50+ Services"
+"1 Dashboard"
+"Official Portal Access"
+"Application Tracking"
+
+Do NOT make these statistics look like real government statistics.
+They are product demo statistics.
+
+==================================================
+6. LANDING PAGE SECTIONS
+==================================================
+
+Add:
+
+SECTION: "How DocumentTrack Works"
+
+Step 1:
+Find a Service
+"Search for the certificate, license or permit you need."
+
+Step 2:
+Understand Requirements
+"Check eligibility, documents, fees and expected processing time."
+
+Step 3:
+Apply Officially
+"Continue to the authorized government portal."
+
+Step 4:
+Track Your Application
+"Save your application number and manage its status from your dashboard."
+
+SECTION: "Why DocumentTrack?"
+
+Cards:
+
+- All Applications in One Place
+- Clear Requirements
+- Official Portal Access
+- Simple Status Tracking
+- Application Timeline
+- Mobile Friendly
+
+SECTION: "Popular Government Services"
+
+Show service cards for:
+
+- Income Certificate
+- Caste Certificate
+- Birth Certificate
+- Death Certificate
+- Driving Licence
+- Passport
+- Property/Building Permit
+- Residence Certificate
+
+SECTION: "Important Notice"
+
+Clearly explain:
+
+"DocumentTrack does not process government applications. Applications are submitted through official government portals or authorized service channels. DocumentTrack helps citizens organize information and track their application references."
+
+This notice is important for transparency.
+
+SECTION: CTA
+
+"Ready to organize your applications?"
+
+Button:
+"Explore Government Services"
+
+==================================================
+7. SERVICES PAGE
+==================================================
+
+Route:
+
+/services
+
+Create a service discovery page.
+
+Header:
+
+"Government Services"
+
+Subtitle:
+
+"Find the service you need and understand what is required before applying."
+
+Search bar:
+
+"Search services..."
+
+Category filters:
+
+- All
+- Certificates
+- Licenses
+- Permits
+- Identity
+- Other Services
+
+Service cards should contain:
+
+Icon
+Service name
+Short description
+Department
+Processing time
+Fee
+"View Details"
+
+Example service:
+
+Income Certificate
+Department: Revenue Department
+Processing: 7–15 working days
+Fee: Varies by state/service channel
+
+Do not claim these values are universal.
+Label demo information appropriately where necessary.
+
+==================================================
+8. SERVICE DETAILS PAGE
+==================================================
+
+Route:
+
+/services/:serviceId
+
+Create a professional service details page.
+
+Example:
+
+Income Certificate
+
+Description:
+"An income certificate is used to certify an individual's or family's income for eligible government schemes, scholarships and other services."
+
+Show sections:
+
+1. Overview
+2. Eligibility
+3. Required Documents
+4. Application Fee
+5. Expected Processing Time
+6. Application Process
+7. Important Notes
+
+Required documents should be displayed as checklist cards.
+
+Example:
+
+✓ Aadhaar / identity proof
+✓ Address proof
+✓ Income-related supporting document
+✓ Passport-size photograph
+
+Again, clearly indicate that exact requirements can vary by state/department.
+
+At the bottom create a large CTA:
+
+"Apply on Official Portal ↗"
+
+When clicked:
+Open the configured official portal URL in a NEW TAB.
+
+Use target="_blank" and appropriate rel attributes.
+
+Also provide:
+
+"Already Applied?"
+
+Button:
+"Add to My Applications"
+
+==================================================
+9. LOGIN PAGE
+==================================================
+
+Route:
+
+/login
+
+Create a professional login page.
+
+Fields:
+
+Email
+Password
+
+Buttons:
+
+Login
+Continue with Google (UI only for now, do not implement)
+Forgot Password
+
+Link:
+"Don't have an account? Sign up"
+
+Since Supabase Auth will be added later, for now use mock authentication/local state.
+
+Do not build a fake production authentication system.
+
+==================================================
+10. SIGNUP PAGE
+==================================================
+
+Route:
+
+/signup
+
+Fields:
+
+Full Name
+Email
+Mobile Number
+Password
+Confirm Password
+
+Checkbox:
+"I agree to the Terms and Privacy Policy."
+
+Button:
+"Create Account"
+
+For now simulate successful signup and route to dashboard.
+
+Keep authentication logic isolated so it can later be replaced by Supabase Auth.
+
+==================================================
+11. DASHBOARD
+==================================================
+
+Route:
+
+/dashboard
+
+This is the most important page.
+
+Header:
+
+"Good morning, Citizen 👋"
+
+Subtitle:
+"Here's an overview of your government applications."
+
+Top summary cards:
+
+Total Applications
+4
+
+In Progress
+2
+
+Completed
+2
+
+Action Required
+1
+
+These are demo values.
+
+Then:
+
+"Recent Applications"
+
+Application cards/table:
+
+1. Income Certificate
+Application ID: INC-2026-839201
+Department: Revenue Department
+Submitted: 05 Oct 2026
+Status: Under Verification
+
+2. Driving Licence
+Application ID: DL-2026-782193
+Department: Transport Department
+Submitted: 28 Sep 2026
+Status: Approved
+
+3. Caste Certificate
+Application ID: CAST-2026-182739
+Status: Submitted
+
+Each application should have:
+
+"View Details"
+
+"Track on Official Portal ↗"
+
+"Update Status"
+
+==================================================
+12. APPLICATION STATUS SYSTEM
+==================================================
+
+Use these statuses:
+
+- Draft
+- Submitted
+- Under Verification
+- Document Verification
+- Under Review
+- Approved
+- Rejected
+- Certificate Ready
+
+Create consistent status badges.
+
+Colors:
+
+Draft → gray
+Submitted → blue
+Under Verification → amber
+Document Verification → amber
+Under Review → blue
+Approved → green
+Rejected → red
+Certificate Ready → green
+
+Do NOT imply that these statuses are received automatically from government systems.
+
+Add a small label where appropriate:
+
+"Status managed by you"
+
+or
+
+"Last updated by you"
+
+==================================================
+13. APPLICATION DETAILS PAGE
+==================================================
+
+Route:
+
+/applications/:applicationId
+
+Show:
+
+Service name
+Application ID
+Department
+Application date
+Current status
+Expected processing time
+Notes
+
+Create a beautiful timeline.
+
+Example:
+
+✓ Application Added
+05 Oct 2026
+
+✓ Submitted on Official Portal
+05 Oct 2026
+
+● Under Verification
+06 Oct 2026
+
+○ Under Review
+Pending
+
+○ Approved
+Pending
+
+Timeline should be generated from mock status history.
+
+Buttons:
+
+"Track on Official Portal ↗"
+
+"Update Status"
+
+"Edit Application"
+
+"Delete Application"
+
+Before delete, show confirmation modal.
+
+==================================================
+14. TRACK ON OFFICIAL PORTAL
+==================================================
+
+This is extremely important.
+
+Every application must have:
+
+"Track on Official Portal ↗"
+
+When clicked:
+
+- Open the official tracking URL in a new tab.
+- Do NOT attempt to scrape the government website.
+- Do NOT claim automatic tracking.
+- Do NOT claim API integration.
+
+Before redirecting, optionally show a small confirmation:
+
+"You are leaving DocumentTrack and opening the official government website."
+
+Buttons:
+
+"Continue to Official Portal"
+"Cancel"
+
+==================================================
+15. ADD APPLICATION PAGE/MODAL
+==================================================
+
+Route:
+
+/applications/add
+
+Create a form:
+
+Select Service
+Application Number
+Application Date
+Current Status
+Official Portal URL
+Tracking URL
+Expected Completion Date
+Notes
+
+Button:
+"Save Application"
+
+After saving:
+Navigate to Dashboard.
+
+Validate:
+- Service required
+- Application number required
+- Application date required
+- Status required
+
+Show validation errors clearly.
+
+==================================================
+16. UPDATE STATUS
+==================================================
+
+Create a modal or page.
+
+Title:
+"Update Application Status"
+
+Current status:
+Under Verification
+
+New status dropdown.
+
+Optional remarks.
+
+Example:
+
+Status:
+Approved
+
+Remarks:
+"Checked official portal on 10 Oct 2026."
+
+When saved:
+- Update current status
+- Add an entry to status history
+- Update the dashboard
+- Update timeline
+
+This will later map directly to Supabase tables.
+
+==================================================
+17. MY APPLICATIONS PAGE
+==================================================
+
+Route:
+
+/applications
+
+Show all applications.
+
+Features:
+
+Search by:
+- Application number
+- Service name
+
+Filters:
+- All
+- In Progress
+- Completed
+- Rejected
+
+Sort:
+- Newest
+- Oldest
+- Recently Updated
+
+Desktop:
+Table/card hybrid.
+
+Mobile:
+Cards.
+
+Each application:
+Service
+Application number
+Status
+Date
+Track Officially
+View Details
+
+==================================================
+18. HOW IT WORKS PAGE
+==================================================
+
+Route:
+
+/how-it-works
+
+Clearly explain the actual workflow.
+
+Step 1:
+Discover a service.
+
+Step 2:
+Check requirements.
+
+Step 3:
+Apply through the official government portal.
+
+Step 4:
+Receive your application/reference number.
+
+Step 5:
+Add the application to DocumentTrack.
+
+Step 6:
+Use "Track on Official Portal" to check official status.
+
+Step 7:
+Update your personal tracking dashboard.
+
+IMPORTANT NOTICE:
+
+"DocumentTrack is not a government department and does not directly process applications. Government applications are submitted and processed by the relevant government department or authorized service provider."
+
+This should be prominent.
+
+==================================================
+19. PROFILE PAGE
+==================================================
+
+Route:
+
+/profile
+
+Show:
+
+Profile photo/avatar
+Full name
+Email
+Mobile
+Member since
+
+Sections:
+
+Personal Information
+Notification Preferences
+Security
+Privacy
+
+Buttons:
+
+Edit Profile
+Save Changes
+Logout
+
+Use mock/local state for now.
+
+==================================================
+20. NOTIFICATIONS
+==================================================
+
+Create notification UI.
+
+Example notifications:
+
+"Your Income Certificate tracking record was updated."
+
+"You haven't updated your Driving Licence application in 5 days."
+
+"Your expected completion date is approaching."
+
+IMPORTANT:
+These are reminders generated by OUR APPLICATION.
+Do not claim they are government notifications.
+
+Add notification dropdown in navbar.
+
+==================================================
+21. SEARCH
+==================================================
+
+Global service search.
+
+Search should find:
+
+Income Certificate
+Caste Certificate
+Birth Certificate
+Death Certificate
+Driving Licence
+Passport
+Building Permit
+Residence Certificate
+
+Add clean search UI.
+
+==================================================
+22. SAMPLE DATA
+==================================================
+
+Create a central mock data file.
+
+Do NOT scatter mock data throughout components.
+
+Example structure:
+
+services.js
+
+applications.js
+
+Keep the data easy to replace later with Supabase queries.
+
+Sample services:
+
+1. Income Certificate
+2. Caste Certificate
+3. Birth Certificate
+4. Death Certificate
+5. Residence Certificate
+6. Driving Licence
+7. Passport
+8. Building Permit
+
+Each service object should have:
+
+id
+name
+description
+department
+category
+eligibility
+requiredDocuments
+fee
+processingTime
+officialPortalUrl
+trackingUrl
+icon
+
+Use placeholder/example URLs only where an actual verified official URL is not available.
+
+IMPORTANT:
+Do not invent fake government URLs and label them as official.
+
+For demo links that are not verified, either:
+- use a clearly marked placeholder
+OR
+- keep the button disabled with "Official link to be configured"
+
+==================================================
+23. RESPONSIVE DESIGN
+==================================================
+
+The application must work properly on:
+
+- 1920px desktop
+- 1440px desktop
+- 1024px tablet
+- 768px tablet
+- 390px mobile
+- 360px mobile
+
+Mobile navigation must work.
+
+Tables must become cards on mobile.
+
+No horizontal overflow.
+
+Buttons must be touch-friendly.
+
+Forms must be mobile-friendly.
+
+==================================================
+24. ACCESSIBILITY
+==================================================
+
+Use:
+
+- Semantic HTML
+- Proper labels
+- Keyboard navigation
+- Focus states
+- Accessible buttons
+- Good color contrast
+- aria-label where needed
+- Don't rely only on colors to communicate status
+
+==================================================
+25. ANIMATIONS
+==================================================
+
+Use subtle animations only:
+
+- Page transitions
+- Card hover
+- Button hover
+- Modal opening
+- Timeline appearance
+- Toast notifications
+
+Keep animations fast and professional.
+
+Do not over-animate.
+
+==================================================
+26. COMPONENT STRUCTURE
+==================================================
+
+Create reusable components.
+
+Suggested structure:
+
+src/
+  components/
+    Navbar
+    Footer
+    ServiceCard
+    ApplicationCard
+    StatusBadge
+    StatusTimeline
+    SearchBar
+    FilterBar
+    Modal
+    ConfirmDialog
+    NotificationDropdown
+    EmptyState
+    LoadingState
+    ProtectedRoute
+
+  pages/
+    Home
+    Services
+    ServiceDetails
+    Login
+    Signup
+    Dashboard
+    Applications
+    AddApplication
+    ApplicationDetails
+    HowItWorks
+    Profile
+
+  data/
+    services
+    applications
+
+  context/
+    AuthContext
+    ApplicationContext
+
+  lib/
+    utils
+
+  App
+  main
+
+Keep components modular.
+
+==================================================
+27. ROUTING
+==================================================
+
+Implement React Router.
+
+Routes:
+
+/
+ /services
+ /services/:serviceId
+ /login
+ /signup
+ /dashboard
+ /applications
+ /applications/add
+ /applications/:applicationId
+ /how-it-works
+ /profile
+
+Create proper navigation between pages.
+
+For now, use mock authentication.
+
+==================================================
+28. STATE MANAGEMENT
+==================================================
+
+Do NOT add Redux unless absolutely necessary.
+
+Use React Context/local state.
+
+Create an ApplicationContext that manages:
+
+- applications
+- addApplication()
+- updateApplication()
+- deleteApplication()
+- updateStatus()
+- statusHistory
+
+Store demo changes in localStorage so refreshing the page does not immediately erase them.
+
+This will make it easier to replace the context methods with Supabase later.
+
+==================================================
+29. SUPABASE PREPARATION
+==================================================
+
+DO NOT CONNECT SUPABASE YET.
+
+However, structure the code so later we can replace:
+
+Mock Service Data
+        ↓
+Supabase services table
+
+Mock Applications
+        ↓
+Supabase applications table
+
+Mock Status History
+        ↓
+Supabase application_status_history table
+
+Mock Authentication
+        ↓
+Supabase Auth
+
+Do not install or configure Supabase unless required for the current frontend.
+
+Create clean service/data abstraction so backend integration later is easy.
+
+==================================================
+30. FUTURE DATABASE STRUCTURE
+==================================================
+
+The frontend should be designed around these future Supabase tables:
+
+profiles:
+- id
+- full_name
+- email
+- phone
+- created_at
+
+services:
+- id
+- name
+- description
+- department
+- category
+- eligibility
+- required_documents
+- fee
+- processing_time
+- official_portal_url
+- tracking_url
+- created_at
+
+applications:
+- id
+- user_id
+- service_id
+- application_number
+- application_date
+- status
+- expected_completion_date
+- notes
+- created_at
+- updated_at
+
+application_status_history:
+- id
+- application_id
+- status
+- remarks
+- changed_at
+
+documents:
+- id
+- user_id
+- application_id
+- document_name
+- file_url
+- created_at
+
+Do not create these database tables now.
+This is only the future integration plan.
+
+==================================================
+31. EMPTY STATES
+==================================================
+
+Create beautiful empty states.
+
+Example:
+
+"No applications yet"
+
+"Once you apply for a government service, add your application number here and manage it from your dashboard."
+
+Button:
+"Explore Services"
+
+Also create empty states for:
+- No search results
+- No notifications
+- No filtered applications
+
+==================================================
+32. ERROR HANDLING
+==================================================
+
+Create polished error states.
+
+Example:
+
+"Something went wrong"
+
+"Please try again."
+
+Button:
+"Retry"
+
+Do not expose raw JavaScript errors to the user.
+
+==================================================
+33. TOAST NOTIFICATIONS
+==================================================
+
+Use toast notifications for:
+
+Application added
+Application updated
+Status updated
+Application deleted
+Profile updated
+Login successful
+Logout successful
+
+Example:
+
+✓ Application added successfully.
+
+==================================================
+34. VISUAL DETAILS
+==================================================
+
+Use high-quality icons from Lucide React.
+
+Suggested icons:
+
+FileText
+Search
+Clock
+CheckCircle
+AlertCircle
+ExternalLink
+ArrowRight
+ShieldCheck
+Building2
+Car
+IdCard
+Passport
+MapPin
+User
+Bell
+Settings
+Plus
+Edit
+Trash2
+ChevronRight
+
+Use icon + text rather than emojis throughout the professional UI.
+
+The Indian flag emoji can be used sparingly in branding if appropriate.
+
+==================================================
+35. IMPORTANT TRUST / TRANSPARENCY RULE
+==================================================
+
+The application must NEVER imply:
+
+- We are the government.
+- We process applications.
+- We have government backend access.
+- We automatically receive government status.
+- We can approve/reject applications.
+- We can guarantee processing time.
+- We can access private government records.
+
+Use wording like:
+
+"Track your application information"
+
+"Check status on official portal"
+
+"Apply through official government website"
+
+"Status updated by you"
+
+"Government processing is handled by the relevant department."
+
+==================================================
+36. FINAL UI QUALITY
+==================================================
+
+The final result should feel like a serious hackathon-winning civic-tech product.
+
+It should NOT look like a basic CRUD application.
+
+Prioritize:
+
+- Excellent dashboard
+- Excellent service cards
+- Clear application timeline
+- Strong navigation
+- Professional typography
+- Responsive design
+- Consistent spacing
+- Good empty states
+- Good loading states
+- Good modals
+- Clear official portal buttons
+- Trust/transparency messaging
+
+==================================================
+37. VERY IMPORTANT REPLIT INSTRUCTION
+==================================================
+
+Build the complete frontend in this single task.
+
+Do NOT stop after creating only the homepage.
+
+Do NOT ask me to create each page manually.
+
+Do NOT create a minimal demo.
+
+Implement all pages, routes, components, mock data, navigation, forms, modals, responsive layouts, localStorage persistence, mock authentication, application CRUD behavior and status timeline.
+
+However:
+
+DO NOT implement Supabase yet.
+
+DO NOT implement a backend yet.
+
+DO NOT implement government API integration.
+
+DO NOT scrape government websites.
+
+DO NOT invent government API access.
+
+Use mock/local data for now.
+
+At the end, make sure:
+
+1. The app runs successfully.
+2. No broken imports.
+3. No console errors.
+4. All routes work.
+5. Navigation works.
+6. Forms work.
+7. Mock application creation works.
+8. Status updates work.
+9. Application deletion works.
+10. LocalStorage persistence works.
+11. Official portal buttons are structured to accept real URLs later.
+12. Mobile layout works.
+13. The code is organized for easy Supabase integration later.
+
+Before finishing, test the complete user journey:
+
+Home
+→ Services
+→ Service Details
+→ Apply on Official Portal
+→ Login
+→ Dashboard
+→ Add Application
+→ Application Details
+→ Update Status
+→ Track on Official Portal
+→ Applications
+→ Profile
+→ Logout
+
+Build the complete frontend now.
