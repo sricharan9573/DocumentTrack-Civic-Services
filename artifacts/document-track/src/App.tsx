@@ -7,10 +7,11 @@ import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { AppProvider } from './context/AppContext';
 import { AppShell } from './components/shared';
 import {
-  ApplicationFormPage, ApplicationsPage, DashboardPage, HomePage, HowItWorksPage,
+  ApplicationFormPage, DashboardPage, HomePage, HowItWorksPage,
   LoginPage, NotFoundPage, ProfilePage, ServicesPage, SignupPage,
 } from './pages/DocumentPages';
 import { ServiceDetailPage } from './pages/ServicePages';
+import { RecentActivityPage } from './pages/RecentActivityPage';
 
 const queryClient = new QueryClient();
 
@@ -22,7 +23,7 @@ function Router() {
     <Route path="/login" component={LoginPage}/>
     <Route path="/signup" component={SignupPage}/>
     <Route path="/dashboard" component={DashboardPage}/>
-    <Route path="/applications" component={ApplicationsPage}/>
+    <Route path="/applications" component={RecentActivityPage}/>
     <Route path="/applications/add" component={ApplicationFormPage}/>
     <Route path="/how-it-works" component={HowItWorksPage}/>
     <Route path="/profile" component={ProfilePage}/>
