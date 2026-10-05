@@ -388,9 +388,8 @@ h3 { font-size:18px; margin-bottom:9px; }
 .status { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:99px; font-size:11px; font-weight:700; white-space:nowrap; }
 .status:before { content:""; width:6px;height:6px;border-radius:100%;background:currentColor; }
 .status-draft { background:#f0f1f3;color:#626d7b; }
-.status-submitted,.status-under-review { background:#eaf1fb;color:#245a97; }
-.status-under-verification,.status-document-verification { background:#fff4df;color:#94620a; }
-.status-approved,.status-certificate-ready { background:#e9f6eb;color:#147432; }
+.status-submitted,.status-in-progress { background:#eaf1fb;color:#245a97; }
+.status-approved,.status-completed { background:#e9f6eb;color:#147432; }
 .status-rejected { background:#fff0ef;color:#b6322e; }
 .app-row { display:flex; align-items:center; gap:16px; padding:17px 19px; border-bottom:1px solid #edf0f4; }
 .app-row:last-child { border:0; }
@@ -430,14 +429,6 @@ h3 { font-size:18px; margin-bottom:9px; }
 .feature-card { padding:17px;display:flex;gap:13px;align-items:flex-start; }
 .feature-card svg { color:#234d7d;flex:none; }
 .feature-card p { margin:4px 0 0;color:#737e8f;font-size:12px;line-height:1.5; }
-.timeline { position:relative;padding-left:30px; }
-.timeline:before { content:"";position:absolute;left:10px;top:8px;bottom:8px;width:2px;background:#e0e6ed; }
-.timeline-item { position:relative;padding:0 0 25px 12px; }
-.timeline-dot { position:absolute;left:-25px;top:2px;width:14px;height:14px;border-radius:50%;border:3px solid #dbe3ed;background:#fff;z-index:1; }
-.timeline-item.complete .timeline-dot { background:#138808;border-color:#d7efdb; }
-.timeline-item.current .timeline-dot { background:#ff9933;border-color:#fff0df; }
-.timeline-item strong { font-size:13px;color:#22334c; }
-.timeline-item p { margin:5px 0 0;font-size:11px;color:#778294;line-height:1.6; }
 .empty-state { text-align:center;padding:48px 25px; }
 .empty-icon { width:54px;height:54px;margin:0 auto 15px;border-radius:16px;display:grid;place-items:center;background:#eff3f8;color:#294e7a; }
 .empty-state p { max-width:400px;margin:0 auto 19px;color:#6b7687;font-size:13px;line-height:1.6; }

@@ -10,7 +10,7 @@ import {
   ApplicationFormPage, ApplicationsPage, DashboardPage, HomePage, HowItWorksPage,
   LoginPage, NotFoundPage, ProfilePage, ServicesPage, SignupPage,
 } from './pages/DocumentPages';
-import { ApplicationDetailPage, ServiceDetailPage } from './pages/PortalPages';
+import { ServiceDetailPage } from './pages/ServicePages';
 
 const queryClient = new QueryClient();
 
@@ -24,8 +24,6 @@ function Router() {
     <Route path="/dashboard" component={DashboardPage}/>
     <Route path="/applications" component={ApplicationsPage}/>
     <Route path="/applications/add" component={ApplicationFormPage}/>
-    <Route path="/applications/:applicationId/edit" component={ApplicationFormPage}/>
-    <Route path="/applications/:applicationId" component={ApplicationDetailPage}/>
     <Route path="/how-it-works" component={HowItWorksPage}/>
     <Route path="/profile" component={ProfilePage}/>
     <Route component={NotFoundPage}/>

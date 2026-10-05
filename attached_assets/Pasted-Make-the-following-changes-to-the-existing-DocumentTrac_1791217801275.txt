@@ -1,0 +1,405 @@
+Make the following changes to the existing DocumentTrack frontend.
+
+IMPORTANT:
+Do NOT redesign the application.
+Do NOT change the existing theme, navbar, layout, typography, or overall styling.
+Only make the changes specified below.
+
+==================================================
+1. REMOVE "VIEW DETAILS" FROM APPLICATIONS
+==================================================
+
+Currently application cards contain buttons such as:
+
+[ View details ]
+[ Track on Official Portal ↗ ]
+
+Remove the "View details" button completely.
+
+The application card should only have the main action:
+
+[ Track on Official Portal ↗ ]
+
+Example:
+
+Income Certificate
+
+INC-2026-839201
+Revenue Department
+Applied 5 Oct 2026
+
+[ Track on Official Portal ↗ ]
+
+Do the same for every application.
+
+==================================================
+2. REMOVE VERIFICATION / VERIFIED FEATURES
+==================================================
+
+We do not need any verified/unverified feature in this project.
+
+Remove any UI, filters, labels, fields, badges, components or logic related to:
+
+- Verified
+- Unverified
+- Verification status
+- Verification badges
+- Government verification
+- Verified application
+- Not verified
+- Verification checks
+
+IMPORTANT:
+
+Do NOT confuse this with an application's normal status.
+
+Application statuses such as:
+
+Submitted
+In Progress
+Approved
+Rejected
+Completed
+
+can remain if they are being used as USER-MANAGED organizational information.
+
+But remove any separate "verified/not verified" functionality.
+
+==================================================
+3. REMOVE BIRTH CERTIFICATE COMPLETELY
+==================================================
+
+Remove "Birth Certificate" from the ENTIRE application.
+
+It must not appear anywhere.
+
+Remove it from:
+
+- Home page
+- Popular services
+- Services page
+- Search results
+- Service cards
+- Service details
+- Apply process
+- Application tracking
+- Dashboard
+- My Applications
+- Mock application data
+- Filters
+- Suggested services
+- Recent applications
+- Search data
+- LocalStorage default/demo data
+- Notifications
+- Any hardcoded examples
+
+Also remove:
+
+BRC-2026-492011
+
+and any other sample Birth Certificate application.
+
+Do not replace Birth Certificate with another service unless necessary for the layout.
+
+==================================================
+4. SIMPLIFY APPLICATION TRACKING
+==================================================
+
+The purpose of our platform is NOT to retrieve live government application status.
+
+For applications in "My Applications", keep only useful organizational information such as:
+
+Service Name
+Application Number
+Department
+Applied Date
+User-managed Status
+
+Example:
+
+--------------------------------------------
+
+Income Certificate
+
+INC-2026-839201
+Revenue Department
+
+Applied: 5 Oct 2026
+
+Status: In Progress
+
+                    [ Track on Official Portal ↗ ]
+
+--------------------------------------------
+
+The official portal button should be the primary action.
+
+==================================================
+5. TRACK ON OFFICIAL PORTAL
+==================================================
+
+For supported services, clicking:
+
+"Track on Official Portal ↗"
+
+should directly open the configured official government website in a NEW TAB.
+
+Do not show an intermediate verification page.
+
+Do not ask whether the portal is verified.
+
+Do not show:
+
+"Verified Government Website"
+
+or
+
+"Unverified Government Website"
+
+or similar messages.
+
+Just navigate to the configured official portal.
+
+Use:
+
+target="_blank"
+rel="noopener noreferrer"
+
+==================================================
+6. REMOVE APPLICATION DETAILS ROUTE IF UNUSED
+==================================================
+
+Since "View details" is being removed, check whether:
+
+/applications/:applicationId
+
+is still required anywhere.
+
+If nothing else uses it, remove the route and associated unused components.
+
+Do not leave dead navigation or broken routes.
+
+==================================================
+7. SERVICE CARDS
+==================================================
+
+Services should be simple.
+
+Example:
+
+Income Certificate
+Revenue Department
+
+Information about the service.
+
+[ Apply on Official Portal ↗ ]
+
+Do NOT add:
+
+View Details
+Verify
+Check Verification
+Verified
+Unverified
+
+If the current service card requires users to open a service details page before applying, simplify it so the primary action can directly open the official portal.
+
+==================================================
+8. APPLY PROCESS
+==================================================
+
+For supported services, the application process should simply be:
+
+User finds service
+      ↓
+Clicks
+"Apply on Official Portal ↗"
+      ↓
+Official Government Portal opens
+      ↓
+User applies there
+
+Our website DOES NOT process the government application.
+
+==================================================
+9. TRACKING PROCESS
+==================================================
+
+Tracking should be:
+
+User opens My Applications
+      ↓
+Finds saved application
+      ↓
+Clicks
+"Track on Official Portal ↗"
+      ↓
+Official Government Portal opens
+      ↓
+User checks official status there
+
+Do NOT create fake live tracking.
+
+Do NOT scrape the government portal.
+
+Do NOT create a mock government API.
+
+==================================================
+10. KEEP THESE SERVICES
+==================================================
+
+Keep services such as:
+
+- Income Certificate
+- Caste Certificate
+- Residence Certificate
+- Driving Licence
+- Passport
+- Death Certificate if already included
+- Building / Property Permit if already included
+
+REMOVE Birth Certificate completely.
+
+==================================================
+11. DASHBOARD CLEANUP
+==================================================
+
+Update dashboard counts after removing Birth Certificate.
+
+Do not leave hardcoded counts that no longer match the displayed applications.
+
+For example, if there are now 3 sample applications:
+
+Total Applications: 3
+
+Calculate summary values dynamically from the application data rather than hardcoding them.
+
+==================================================
+12. CLEAN MOCK DATA
+==================================================
+
+Search the entire codebase for:
+
+"Birth Certificate"
+"BRC-2026-492011"
+"birth-certificate"
+
+Remove all related data.
+
+Also search the codebase for:
+
+"View details"
+"View Details"
+
+Remove it from application/service cards where it is no longer required.
+
+Search for verification-related features and remove any separate verified/unverified functionality.
+
+==================================================
+13. IMPORTANT UX REQUIREMENT
+==================================================
+
+After these changes, application rows should be much cleaner.
+
+Desired desktop structure:
+
+[Icon]
+
+Income Certificate
+INC-2026-839201 · Revenue Department
+Applied 5 Oct 2026
+
+[Status]
+
+[ Track on Official Portal ↗ ]
+
+
+Caste Certificate
+CAST-2026-182739 · Revenue Department
+Applied 2 Oct 2026
+
+[Status]
+
+[ Track on Official Portal ↗ ]
+
+
+Driving Licence
+DL-2026-782193 · Ministry of Road Transport & Highways
+Applied 28 Sept 2026
+
+[Status]
+
+[ Track on Official Portal ↗ ]
+
+There should be NO:
+
+[View details]
+
+and NO Birth Certificate row.
+
+==================================================
+14. MOBILE RESPONSIVENESS
+==================================================
+
+After removing "View details", make sure the application cards still look good on mobile.
+
+On mobile use:
+
+Service Name
+Application ID
+Department
+Applied Date
+Status
+
+[ Track on Official Portal ↗ ]
+
+The button should use the available width if necessary.
+
+No horizontal overflow.
+
+==================================================
+15. DO NOT CONNECT BACKEND YET
+==================================================
+
+Do not connect Supabase.
+
+Do not create a backend.
+
+Do not add government APIs.
+
+We are still completing the frontend.
+
+==================================================
+16. FINAL TEST
+==================================================
+
+After making the changes:
+
+1. Search the entire project for "Birth Certificate".
+   There should be zero user-facing occurrences.
+
+2. Search for "BRC-2026-492011".
+   It should no longer exist.
+
+3. Make sure application cards do not contain "View details".
+
+4. Make sure there are no separate verified/unverified features.
+
+5. Income Certificate official portal button works.
+
+6. Caste Certificate official portal button works.
+
+7. Driving Licence official portal button works.
+
+8. Passport official portal button works if present.
+
+9. No broken routes.
+
+10. No console errors.
+
+11. Dashboard statistics match the remaining data.
+
+12. Mobile layout works.
+
+Do not redesign anything else.
