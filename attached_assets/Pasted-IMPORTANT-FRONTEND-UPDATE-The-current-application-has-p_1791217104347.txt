@@ -1,0 +1,374 @@
+IMPORTANT FRONTEND UPDATE:
+
+The current application has placeholder buttons showing:
+
+"Official link to be configured"
+
+We now need to replace these placeholders with REAL, VERIFIED OFFICIAL GOVERNMENT PORTAL LINKS wherever we have a verified official source.
+
+DO NOT leave "Official link to be configured" for the services listed below.
+
+DO NOT invent government URLs.
+
+DO NOT create fake government portals.
+
+DO NOT scrape any government website.
+
+DO NOT claim API integration.
+
+The buttons must simply open the official government website in a new browser tab.
+
+==================================================
+1. INCOME CERTIFICATE
+==================================================
+
+For Andhra Pradesh certificate services, use the official AP MeeSeva portal:
+
+https://ap.meeseva.gov.in/
+
+Apply button:
+"Apply on Official Portal ↗"
+
+Tracking button:
+"Track on Official Portal ↗"
+
+Both should open the official AP MeeSeva portal in a new tab.
+
+Add a small note:
+
+"Application and status services are handled by the official MeeSeva/government portal."
+
+==================================================
+2. CASTE CERTIFICATE
+==================================================
+
+Use the official Andhra Pradesh MeeSeva portal:
+
+https://ap.meeseva.gov.in/
+
+Apply button:
+"Apply on Official Portal ↗"
+
+Tracking button:
+"Track on Official Portal ↗"
+
+Do NOT claim that our application automatically receives the government status.
+
+==================================================
+3. BIRTH CERTIFICATE
+==================================================
+
+For now, do NOT invent a direct application URL.
+
+Use the appropriate official government service portal only if a verified URL is available.
+
+If a verified direct URL is not available:
+
+Show:
+
+"Official portal"
+
+and:
+
+"Open Government Services ↗"
+
+If no verified URL is available, do not create a fake link.
+
+==================================================
+4. DEATH CERTIFICATE
+==================================================
+
+Same rule:
+
+Use a verified official government portal only.
+
+Do NOT invent a URL.
+
+If no verified direct application/tracking URL is available, show:
+
+"Official portal link will be available based on your location."
+
+Keep the button disabled until a verified URL is configured.
+
+==================================================
+5. DRIVING LICENCE
+==================================================
+
+Use the official Government of India Parivahan/Sarathi system.
+
+Official portal:
+
+https://sarathi.parivahan.gov.in/
+
+Apply button:
+"Apply on Official Portal ↗"
+
+Tracking button:
+"Track on Official Portal ↗"
+
+Open in a new tab.
+
+Add department:
+
+"Ministry of Road Transport & Highways"
+
+==================================================
+6. PASSPORT
+==================================================
+
+Use the official Passport Seva portal:
+
+https://www.passportindia.gov.in/
+
+Apply button:
+"Apply on Official Portal ↗"
+
+Tracking button:
+"Track on Official Portal ↗"
+
+Open in a new tab.
+
+Department:
+
+"Ministry of External Affairs"
+
+IMPORTANT:
+Do not use third-party passport websites.
+
+==================================================
+7. RESIDENCE CERTIFICATE
+==================================================
+
+For Andhra Pradesh, use:
+
+https://ap.meeseva.gov.in/
+
+Apply button:
+"Apply on Official Portal ↗"
+
+Tracking button:
+"Track on Official Portal ↗"
+
+==================================================
+8. BUILDING / PROPERTY PERMIT
+==================================================
+
+Do NOT invent a single national portal.
+
+This service can vary by state/local authority.
+
+For now, display:
+
+"Government portal depends on your location."
+
+Do not create a fake URL.
+
+Provide a disabled button:
+
+"Official portal varies by location"
+
+==================================================
+9. SERVICE DATA STRUCTURE
+==================================================
+
+Update the central service data so every service has:
+
+officialPortalUrl
+trackingUrl
+portalLabel
+department
+
+Example:
+
+{
+  id: "income-certificate",
+  name: "Income Certificate",
+  department: "Revenue Department",
+  officialPortalUrl: "https://ap.meeseva.gov.in/",
+  trackingUrl: "https://ap.meeseva.gov.in/",
+  portalLabel: "AP MeeSeva"
+}
+
+Driving Licence:
+
+{
+  id: "driving-licence",
+  name: "Driving Licence",
+  department: "Ministry of Road Transport & Highways",
+  officialPortalUrl: "https://sarathi.parivahan.gov.in/",
+  trackingUrl: "https://sarathi.parivahan.gov.in/",
+  portalLabel: "Sarathi Parivahan"
+}
+
+Passport:
+
+{
+  id: "passport",
+  name: "Passport",
+  department: "Ministry of External Affairs",
+  officialPortalUrl: "https://www.passportindia.gov.in/",
+  trackingUrl: "https://www.passportindia.gov.in/",
+  portalLabel: "Passport Seva"
+}
+
+==================================================
+10. APPLICATION CARDS
+==================================================
+
+Currently the application cards display:
+
+"Official link to be configured"
+
+Replace this.
+
+For applications that have a valid official portal URL, show:
+
+[ Track on Official Portal ↗ ]
+
+The button must:
+
+- Open the URL in a new tab
+- Use target="_blank"
+- Use rel="noopener noreferrer"
+- Have an external-link icon
+- Be visually prominent
+
+Example:
+
+Income Certificate
+
+INC-2026-839201
+
+Under Verification
+
+[ View Details ] [ Track on Official Portal ↗ ]
+
+==================================================
+11. SERVICE DETAILS PAGE
+==================================================
+
+The current page contains:
+
+"NEXT STEPS"
+
+and:
+
+"Official link to be configured"
+
+Replace it with:
+
+NEXT STEPS
+
+Continue when ready
+
+"DocumentTrack does not submit or process your government application. Continue to the official government portal to apply."
+
+[ Apply on Official Portal ↗ ]
+
+Below it:
+
+Official Portal
+AP MeeSeva
+
+[ Open Official Portal ↗ ]
+
+For services without a verified URL, show:
+
+"Official portal varies by location or department."
+
+==================================================
+12. IMPORTANT TRANSPARENCY MESSAGE
+==================================================
+
+Keep this message visible:
+
+"DocumentTrack does not submit applications to government departments or access government systems directly. Applications are submitted through official government portals. Use the official portal link above to apply or check your status."
+
+This is a core part of the product.
+
+==================================================
+13. APPLICATION TRACKING PAGE
+==================================================
+
+For each application show:
+
+Application ID
+Service
+Department
+Current status
+Last updated
+Application date
+
+Then:
+
+[ Track on Official Portal ↗ ]
+
+Add small text:
+
+"Status shown here is manually updated by the citizen and does not represent live government data."
+
+==================================================
+14. DO NOT CHANGE THE OVERALL DESIGN
+==================================================
+
+Keep the existing design.
+
+Do NOT redesign the entire website.
+
+Do NOT remove existing pages.
+
+Do NOT change the color system.
+
+Do NOT change the navbar.
+
+Do NOT remove the application timeline.
+
+Only update:
+
+- Government portal URLs
+- Apply buttons
+- Track buttons
+- Service data
+- Application cards
+- Service details
+- Portal labels
+- Transparency messaging
+
+==================================================
+15. TESTING
+==================================================
+
+After implementing:
+
+Test:
+
+Income Certificate
+→ Apply on Official Portal
+→ opens AP MeeSeva in a new tab
+
+Caste Certificate
+→ Apply on Official Portal
+→ opens AP MeeSeva
+
+Driving Licence
+→ Apply on Official Portal
+→ opens Sarathi Parivahan
+
+Passport
+→ Apply on Official Portal
+→ opens Passport Seva
+
+Also test:
+
+Application Dashboard
+→ Track on Official Portal
+
+Make sure no page displays:
+
+"Official link to be configured"
+
+for services where a verified URL has been provided.
+
+Do not create fake URLs for services where we have not provided a verified URL.
+
+Do not implement any government API.

@@ -7,10 +7,10 @@ import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { AppProvider } from './context/AppContext';
 import { AppShell } from './components/shared';
 import {
-  ApplicationDetailPage, ApplicationFormPage, ApplicationsPage, DashboardPage,
-  HomePage, HowItWorksPage, LoginPage, NotFoundPage, ProfilePage, ServiceDetailPage,
-  ServicesPage, SignupPage,
+  ApplicationFormPage, ApplicationsPage, DashboardPage, HomePage, HowItWorksPage,
+  LoginPage, NotFoundPage, ProfilePage, ServicesPage, SignupPage,
 } from './pages/DocumentPages';
+import { ApplicationDetailPage, ServiceDetailPage } from './pages/PortalPages';
 
 const queryClient = new QueryClient();
 
