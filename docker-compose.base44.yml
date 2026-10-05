@@ -1,0 +1,32 @@
+services:
+  web:
+    image: node:24-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+      - pnpm-store:/app/.local/share/pnpm-store
+    ports:
+      - "3000:5173"
+    environment:
+      - PORT=5173
+      - BASE_PATH=/
+      - NODE_ENV=development
+      - CI=true
+    command:
+      - sh
+      - -ec
+      - |
+        corepack enable pnpm
+        pnpm config set store-dir /app/.local/share/pnpm-store
+        pnpm install --frozen-lockfile --config.dangerouslyAllowAllBuilds=true
+        exec pnpm --filter @workspace/document-track run dev
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:5173/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+    restart: on-failure
+
+volumes:
+  pnpm-store:
