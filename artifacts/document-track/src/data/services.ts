@@ -15,3 +15,12 @@ export const services: Service[] = [
 ];
 
 export const serviceCaveat = 'Service information is a general demo guide. Eligibility, documents, fees and processing times vary by state, department and individual case. Confirm current rules with the relevant authority.';
+
+export function getTranslatedService(service: Service, t: (key: string, fallback?: string) => string): Service {
+  return {
+    ...service,
+    name: t(`svc.${service.id}.name`, service.name),
+    description: t(`svc.${service.id}.description`, service.description),
+    department: t(`svc.${service.id}.department`, service.department),
+  };
+}

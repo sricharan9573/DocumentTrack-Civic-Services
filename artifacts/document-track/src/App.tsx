@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { AppProvider } from './context/AppContext';
+import { LanguageProvider } from './i18n/LanguageContext';
 import { AppShell } from './components/shared';
 import {
   ApplicationFormPage, DashboardPage, HomePage, HowItWorksPage,
@@ -16,28 +17,47 @@ import { RecentActivityPage } from './pages/RecentActivityPage';
 const queryClient = new QueryClient();
 
 function Router() {
-  return <RoutedErrorBoundary><AppShell><Switch>
-    <Route path="/" component={HomePage}/>
-    <Route path="/services" component={ServicesPage}/>
-    <Route path="/services/:serviceId" component={ServiceDetailPage}/>
-    <Route path="/login" component={LoginPage}/>
-    <Route path="/signup" component={SignupPage}/>
-    <Route path="/dashboard" component={DashboardPage}/>
-    <Route path="/applications" component={RecentActivityPage}/>
-    <Route path="/applications/add" component={ApplicationFormPage}/>
-    <Route path="/how-it-works" component={HowItWorksPage}/>
-    <Route path="/profile" component={ProfilePage}/>
-    <Route component={NotFoundPage}/>
-  </Switch></AppShell></RoutedErrorBoundary>;
+  return (
+    <RoutedErrorBoundary>
+      <AppShell>
+        <Switch>
+          <Route path="/" component={HomePage} />
+          <Route path="/services" component={ServicesPage} />
+          <Route path="/services/:serviceId" component={ServiceDetailPage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/signup" component={SignupPage} />
+          <Route path="/dashboard" component={DashboardPage} />
+          <Route path="/applications" component={RecentActivityPage} />
+          <Route path="/applications/add" component={ApplicationFormPage} />
+          <Route path="/how-it-works" component={HowItWorksPage} />
+          <Route path="/profile" component={ProfilePage} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </AppShell>
+    </RoutedErrorBoundary>
+  );
 }
+
 function RoutedErrorBoundary({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   return <ErrorBoundary resetKey={location}>{children}</ErrorBoundary>;
 }
+
 function App() {
-  return <QueryClientProvider client={queryClient}><TooltipProvider><AppProvider>
-    <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}><Router/></WouterRouter>
-    <Toaster/>
-  </AppProvider></TooltipProvider></QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <LanguageProvider>
+          <AppProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+              <Router />
+            </WouterRouter>
+            <Toaster />
+          </AppProvider>
+        </LanguageProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
 }
+
 export default App;
