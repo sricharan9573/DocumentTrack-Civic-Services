@@ -17,8 +17,8 @@ type AppContextValue = {
   addApplication: (data: Omit<Application, 'id' | 'createdAt' | 'updatedAt'>) => Application;
   user: UserProfile | null;
   loadingAuth: boolean;
-  login: (email: string, password?: string) => Promise<{ success: boolean; error?: string }>;
-  signup: (profile: UserProfile & { password?: string }) => Promise<{ success: boolean; error?: string }>;
+  login: (email: string, password?: string, forceLocal?: boolean) => Promise<{ success: boolean; error?: string; isNetworkError?: boolean }>;
+  signup: (profile: UserProfile & { password?: string }, forceLocal?: boolean) => Promise<{ success: boolean; error?: string; isNetworkError?: boolean }>;
   logout: () => Promise<void>;
   updateProfile: (p: UserProfile) => Promise<void>;
   activities: UserActivity[];
@@ -281,10 +281,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   // Supabase Signup
-  const signup = async (profile: UserProfile & { password?: string }): Promise<{ success: boolean; error?: string }> => {
+  const signup = async (
+    profile: UserProfile & { password?: string },
+    forceLocal: boolean = false
+  ): Promise<{ success: boolean; error?: string; isNetworkError?: boolean }> => {
     const { email, password, name, mobile } = profile;
 
-    if (isSupabaseConfigured && password) {
+    if (isSupabaseConfigured && password && !forceLocal) {
       try {
         const { data, error } = await supabase.auth.signUp({
           email,
@@ -329,7 +332,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
           return { success: true };
         }
       } catch (err: any) {
-        return { success: false, error: err.message || 'Signup failed' };
+        const isNet = err?.message?.toLowerCase().includes('fetch') || err?.name === 'TypeError';
+        const msg = isNet
+          ? 'Unable to reach Supabase backend. The project may be paused in your Supabase dashboard or offline.'
+          : err.message || 'Signup failed';
+        return { success: false, error: msg, isNetworkError: isNet };
       }
     }
 
@@ -342,8 +349,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   // Supabase Login
-  const login = async (email: string, password?: string): Promise<{ success: boolean; error?: string }> => {
-    if (isSupabaseConfigured && password) {
+  const login = async (
+    email: string,
+    password?: string,
+    forceLocal: boolean = false
+  ): Promise<{ success: boolean; error?: string; isNetworkError?: boolean }> => {
+    if (isSupabaseConfigured && password && !forceLocal) {
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
@@ -361,7 +372,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
           return { success: true };
         }
       } catch (err: any) {
-        return { success: false, error: err.message || 'Login failed' };
+        const isNet = err?.message?.toLowerCase().includes('fetch') || err?.name === 'TypeError';
+        const msg = isNet
+          ? 'Unable to reach Supabase backend. The project may be paused in your Supabase dashboard or offline.'
+          : err.message || 'Login failed';
+        return { success: false, error: msg, isNetworkError: isNet };
       }
     }
 

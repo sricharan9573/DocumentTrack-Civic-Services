@@ -255,11 +255,13 @@ export function LoginPage() {
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isNetworkError, setIsNetworkError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsNetworkError(false);
     if (!email.trim()) {
       setError('Email address is compulsory to enter the site.');
       return;
@@ -269,6 +271,7 @@ export function LoginPage() {
     setLoading(false);
     if (!res.success) {
       setError(res.error || 'Failed to sign in. Please check your credentials.');
+      setIsNetworkError(Boolean(res.isNetworkError));
     } else {
       setLocation('/dashboard');
     }
@@ -277,6 +280,7 @@ export function LoginPage() {
   const handleSignUp = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsNetworkError(false);
     if (!email.trim()) {
       setError('Email address is compulsory to enter the site.');
       return;
@@ -292,9 +296,30 @@ export function LoginPage() {
     setLoading(false);
     if (!res.success) {
       setError(res.error || 'Failed to create account.');
+      setIsNetworkError(Boolean(res.isNetworkError));
     } else {
       setLocation('/dashboard');
     }
+  };
+
+  const handleProceedLocal = async () => {
+    setLoading(true);
+    if (mode === 'signup') {
+      await signup(
+        {
+          name: name.trim() || email.split('@')[0],
+          email: email.trim(),
+          mobile: mobile.trim(),
+          password,
+          memberSince: new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
+        },
+        true
+      );
+    } else {
+      await login(email.trim(), password, true);
+    }
+    setLoading(false);
+    setLocation('/dashboard');
   };
 
   return (
@@ -374,7 +399,61 @@ export function LoginPage() {
             />
           </div>
 
-          {error && <div className="error-text" role="alert" style={{ color: '#dc2626', fontSize: 13 }}>{error}</div>}
+          {error && (
+            <div
+              className="error-box"
+              role="alert"
+              style={{
+                background: '#fef2f2',
+                border: '1px solid #fecaca',
+                borderRadius: 8,
+                padding: '12px 14px',
+                fontSize: 13,
+                color: '#991b1b',
+                lineHeight: 1.45,
+              }}
+            >
+              <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>⚠️</span>
+                <span>{error}</span>
+              </div>
+              {isNetworkError && (
+                <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid #fee2e2' }}>
+                  <p style={{ margin: '0 0 8px 0', fontSize: 12, color: '#7f1d1d' }}>
+                    <strong>Note:</strong> Free-tier Supabase projects pause after inactivity. You can unpause it at{' '}
+                    <a
+                      href="https://supabase.com/dashboard"
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: '#123c73', textDecoration: 'underline', fontWeight: 600 }}
+                    >
+                      supabase.com
+                    </a>{' '}
+                    or continue immediately in offline local demo mode.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleProceedLocal}
+                    style={{
+                      background: '#123c73',
+                      color: '#ffffff',
+                      fontSize: 12,
+                      padding: '7px 14px',
+                      borderRadius: 6,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      border: 'none',
+                      width: '100%',
+                      marginTop: 4,
+                      textAlign: 'center',
+                    }}
+                  >
+                    ⚡ Continue in Local Demo Mode
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
           <button
             className="btn btn-primary"
@@ -429,8 +508,12 @@ export function SignupPage() {
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState('');
 
-  const submit = (e: FormEvent) => {
+  const [isNetworkError, setIsNetworkError] = useState(false);
+
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
+    setError('');
+    setIsNetworkError(false);
     if (!agree) {
       setError('Please agree to the Terms and Privacy Policy.');
       return;
@@ -443,7 +526,32 @@ export function SignupPage() {
       setError('Passwords do not match.');
       return;
     }
-    signup({ name, email, mobile, memberSince: new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }) });
+    const res = await signup({
+      name: name.trim() || email.split('@')[0],
+      email: email.trim(),
+      mobile: mobile.trim(),
+      password,
+      memberSince: new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
+    });
+    if (!res.success) {
+      setError(res.error || 'Failed to create profile.');
+      setIsNetworkError(Boolean(res.isNetworkError));
+    } else {
+      setLocation('/dashboard');
+    }
+  };
+
+  const handleProceedLocal = async () => {
+    await signup(
+      {
+        name: name.trim() || email.split('@')[0],
+        email: email.trim(),
+        mobile: mobile.trim(),
+        password,
+        memberSince: new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
+      },
+      true
+    );
     setLocation('/dashboard');
   };
 
@@ -479,7 +587,52 @@ export function SignupPage() {
           <label style={{ display: 'flex', gap: 9, fontSize: 12, alignItems: 'center' }}>
             <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} data-testid="checkbox-signup-terms" /> {t('auth.agreeTerms', 'I agree to the Terms and Privacy Policy.')}
           </label>
-          {error && <div className="error-text" role="alert">{error}</div>}
+          {error && (
+            <div
+              className="error-box"
+              role="alert"
+              style={{
+                background: '#fef2f2',
+                border: '1px solid #fecaca',
+                borderRadius: 8,
+                padding: '12px 14px',
+                fontSize: 13,
+                color: '#991b1b',
+                lineHeight: 1.45,
+              }}
+            >
+              <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>⚠️</span>
+                <span>{error}</span>
+              </div>
+              {isNetworkError && (
+                <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid #fee2e2' }}>
+                  <p style={{ margin: '0 0 8px 0', fontSize: 12, color: '#7f1d1d' }}>
+                    Free-tier Supabase projects pause after inactivity. You can unpause it on Supabase dashboard or continue in local demo mode.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleProceedLocal}
+                    style={{
+                      background: '#123c73',
+                      color: '#ffffff',
+                      fontSize: 12,
+                      padding: '7px 14px',
+                      borderRadius: 6,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      border: 'none',
+                      width: '100%',
+                      marginTop: 4,
+                      textAlign: 'center',
+                    }}
+                  >
+                    ⚡ Continue in Local Demo Mode
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
           <button type="submit" className="btn btn-primary" data-testid="button-signup-submit">
             {t('auth.btnCreateProfile', 'Create demo profile')}
           </button>
