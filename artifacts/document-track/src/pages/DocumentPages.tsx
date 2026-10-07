@@ -246,56 +246,171 @@ export function ServicesPage() {
 }
 
 export function LoginPage() {
-  const { login } = useApp();
+  const { login, signup } = useApp();
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const submit = (e: FormEvent) => {
+  const handleSignIn = async (e: FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError('Enter your email and password to continue.');
+    setError('');
+    if (!email.trim()) {
+      setError('Email address is compulsory to enter the site.');
       return;
     }
-    login(email);
-    setLocation('/dashboard');
+    setLoading(true);
+    const res = await login(email.trim(), password);
+    setLoading(false);
+    if (!res.success) {
+      setError(res.error || 'Failed to sign in. Please check your credentials.');
+    } else {
+      setLocation('/dashboard');
+    }
+  };
+
+  const handleSignUp = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+    if (!email.trim()) {
+      setError('Email address is compulsory to enter the site.');
+      return;
+    }
+    setLoading(true);
+    const res = await signup({
+      name: name.trim() || email.split('@')[0],
+      email: email.trim(),
+      mobile: mobile.trim(),
+      password,
+      memberSince: new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
+    });
+    setLoading(false);
+    if (!res.success) {
+      setError(res.error || 'Failed to create account.');
+    } else {
+      setLocation('/dashboard');
+    }
   };
 
   return (
-    <div className="auth-wrap">
-      <section className="card auth-card">
-        <div className="eyebrow">{t('auth.welcomeBack', 'Welcome back')}</div>
-        <h1>{t('auth.loginTitle', 'Sign in to your workspace')}</h1>
-        <p className="muted" style={{ fontSize: 13, lineHeight: 1.65 }}>
-          {t('auth.loginSub', 'This demo uses a local mock session on this device. Do not enter a real password; passwords are never stored.')}
+    <div className="auth-wrap" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '65vh' }}>
+      <section className="card auth-card" style={{ maxWidth: 440, width: '100%', padding: '32px 28px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}>
+        <div className="eyebrow" style={{ color: '#123c73', fontWeight: 700, letterSpacing: '0.05em' }}>
+          {mode === 'signin' ? 'Sign In Required' : 'Create Account'}
+        </div>
+        <h1 style={{ fontSize: 24, margin: '8px 0 10px', color: '#0f172a' }}>
+          {mode === 'signin' ? 'Welcome to DocumentTrack' : 'Register your Profile'}
+        </h1>
+        <p className="muted" style={{ fontSize: 13, lineHeight: 1.5, marginBottom: 22, color: '#475569' }}>
+          {mode === 'signin'
+            ? 'Please enter your compulsory email address below to access the site and your document workspace.'
+            : 'Fill in your email and details below to set up your citizen document tracking account.'}
         </p>
-        <form onSubmit={submit} className="grid" style={{ gap: 15, marginTop: 23 }}>
+
+        <form onSubmit={mode === 'signin' ? handleSignIn : handleSignUp} className="grid" style={{ gap: 14 }}>
+          {mode === 'signup' && (
+            <div className="field">
+              <label htmlFor="auth-name" style={{ fontWeight: 600, fontSize: 13 }}>Full Name</label>
+              <input
+                id="auth-name"
+                className="input"
+                type="text"
+                placeholder="e.g. Rahul Sharma"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                data-testid="input-signup-name"
+              />
+            </div>
+          )}
+
           <div className="field">
-            <label htmlFor="login-email">{t('auth.labelEmail', 'Email')}</label>
-            <input id="login-email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required data-testid="input-login-email" />
+            <label htmlFor="auth-email" style={{ fontWeight: 600, fontSize: 13, display: 'flex', gap: 4 }}>
+              Email Address <span style={{ color: '#dc2626' }}>* (Compulsory)</span>
+            </label>
+            <input
+              id="auth-email"
+              className="input"
+              type="email"
+              placeholder="user@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoFocus
+              data-testid="input-login-email"
+            />
           </div>
+
+          {mode === 'signup' && (
+            <div className="field">
+              <label htmlFor="auth-mobile" style={{ fontWeight: 600, fontSize: 13 }}>Mobile Number</label>
+              <input
+                id="auth-mobile"
+                className="input"
+                type="tel"
+                placeholder="+91 9876543210"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                data-testid="input-signup-mobile"
+              />
+            </div>
+          )}
+
           <div className="field">
-            <label htmlFor="login-password">{t('auth.labelPassword', 'Password')}</label>
-            <input id="login-password" className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required data-testid="input-login-password" />
+            <label htmlFor="auth-password" style={{ fontWeight: 600, fontSize: 13 }}>Password</label>
+            <input
+              id="auth-password"
+              className="input"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              data-testid="input-login-password"
+            />
           </div>
-          {error && <div className="error-text" role="alert">{error}</div>}
-          <button className="btn btn-primary" type="submit" data-testid="button-login-submit">
-            {t('auth.btnSignIn', 'Sign in')}
-          </button>
-          <button className="btn btn-secondary" type="button" disabled title="Not available in this demo" data-testid="button-google-login">
-            {t('auth.btnGoogle', 'Continue with Google · unavailable')}
+
+          {error && <div className="error-text" role="alert" style={{ color: '#dc2626', fontSize: 13 }}>{error}</div>}
+
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={loading}
+            style={{ width: '100%', minHeight: 44, fontSize: 15, fontWeight: 600, marginTop: 8 }}
+            data-testid="button-login-submit"
+          >
+            {loading ? 'Authenticating...' : mode === 'signin' ? 'Enter Site with Email' : 'Create Profile & Enter'}
           </button>
         </form>
-        <button className="btn btn-ghost" style={{ paddingLeft: 0, marginTop: 10 }} onClick={() => setError('Password recovery is not available in this local demo.')}>
-          {t('auth.forgotPassword', 'Forgot password?')}
-        </button>
-        <div className="small muted" style={{ marginTop: 10 }}>
-          {t('auth.newHere', 'New here?')} <Link href="/signup" style={{ color: '#123c73', fontWeight: 700 }}>{t('auth.createDemoProfile', 'Create a demo profile')}</Link>
-        </div>
-        <div style={{ marginTop: 20 }}>
-          <Notice>{t('auth.mockAuthNotice', 'Mock authentication is for demonstration only. It does not provide account security.')}</Notice>
+
+        <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid #e2e8f0', fontSize: 13, textAlign: 'center' }}>
+          {mode === 'signin' ? (
+            <span>
+              Don't have an account?{' '}
+              <button
+                type="button"
+                onClick={() => { setMode('signup'); setError(''); }}
+                style={{ background: 'none', border: 'none', color: '#123c73', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+              >
+                Create Account
+              </button>
+            </span>
+          ) : (
+            <span>
+              Already registered?{' '}
+              <button
+                type="button"
+                onClick={() => { setMode('signin'); setError(''); }}
+                style={{ background: 'none', border: 'none', color: '#123c73', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+              >
+                Sign In
+              </button>
+            </span>
+          )}
         </div>
       </section>
     </div>

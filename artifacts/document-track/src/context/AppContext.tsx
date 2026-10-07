@@ -112,6 +112,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           await loadSupabaseProfile(session.user.id, session.user.email || '');
+          await fetchSupabaseApplications(session.user.id);
         }
       } catch (err) {
         console.warn('Error loading Supabase session:', err);
@@ -125,6 +126,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         await loadSupabaseProfile(session.user.id, session.user.email || '');
+        await fetchSupabaseApplications(session.user.id);
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
         localStorage.removeItem('dt-user');
@@ -135,6 +137,35 @@ export function AppProvider({ children }: { children: ReactNode }) {
       subscription.unsubscribe();
     };
   }, []);
+
+  // Fetch applications from Supabase 'applications' table
+  const fetchSupabaseApplications = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('applications')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (data && !error && data.length > 0) {
+        const loaded: Application[] = data.map((item) => ({
+          id: item.id,
+          serviceId: item.service_id || item.serviceId,
+          applicationNumber: item.application_number || item.applicationNumber,
+          applicationDate: item.application_date || item.applicationDate,
+          status: (statuses.includes(item.status) ? item.status : 'In Progress') as ApplicationStatus,
+          expectedCompletionDate: item.expected_completion_date || item.expectedCompletionDate || '',
+          notes: item.notes || '',
+          createdAt: item.created_at || item.createdAt || new Date().toISOString(),
+          updatedAt: item.updated_at || item.updatedAt || new Date().toISOString(),
+        }));
+        setApplications(loaded);
+        localStorage.setItem('dt-applications', JSON.stringify(loaded));
+      }
+    } catch (err) {
+      console.warn('Error fetching applications from Supabase:', err);
+    }
+  };
 
   // Fetch profile from Supabase 'profiles' table using auth.uid()
   const loadSupabaseProfile = async (userId: string, email: string) => {
@@ -394,6 +425,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const id = `app-${Math.random().toString(36).slice(2, 10)}`;
     const item: Application = { ...data, id, createdAt: now, updatedAt: now };
     setApplications((v) => [item, ...v]);
+
+    // Save to Supabase 'applications' table if configured & signed in
+    if (isSupabaseConfigured) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          supabase.from('applications').insert([
+            {
+              id,
+              user_id: session.user.id,
+              service_id: data.serviceId,
+              application_number: data.applicationNumber,
+              application_date: data.applicationDate,
+              status: data.status,
+              expected_completion_date: data.expectedCompletionDate || null,
+              notes: data.notes || '',
+              created_at: now,
+              updated_at: now,
+            },
+          ]).then(({ error }) => {
+            if (error) {
+              console.warn('Could not insert application into Supabase:', error.message);
+            }
+          });
+        }
+      });
+    }
 
     // Record activity
     const service = services.find((s) => s.id === data.serviceId);

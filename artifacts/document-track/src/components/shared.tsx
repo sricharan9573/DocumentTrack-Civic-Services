@@ -196,7 +196,7 @@ export function Navbar() {
           <button className="icon-button desktop-only" aria-label="Search services" onClick={() => setSearchOpen((v) => !v)} data-testid="button-global-search">
             <Search size={17} />
           </button>
-          {user ? (
+          {user && (
             <>
               <Link href="/profile" className="icon-button desktop-only" aria-label={t('nav.profile', 'Profile')} data-testid="link-profile">
                 <UserRound size={17} />
@@ -204,15 +204,6 @@ export function Navbar() {
               <button className="btn btn-ghost desktop-only" onClick={logout} style={{ minHeight: 37, padding: '0 8px' }} data-testid="button-logout">
                 <LogOut size={15} />
               </button>
-            </>
-          ) : (
-            <>
-              <Link className="btn btn-ghost desktop-only" href="/login" style={{ minHeight: 37 }} data-testid="link-login">
-                {t('nav.login', 'Log in')}
-              </Link>
-              <Link className="btn btn-primary desktop-only" href="/signup" style={{ minHeight: 37, padding: '0 13px' }} data-testid="link-signup">
-                {t('nav.createAccount', 'Create Account')}
-              </Link>
             </>
           )}
           <button className="icon-button mobile-toggle" aria-label={menu ? 'Close navigation' : 'Open navigation'} onClick={() => setMenu((v) => !v)} data-testid="button-mobile-menu">
@@ -222,7 +213,7 @@ export function Navbar() {
       </div>
       {menu && (
         <nav className="mobile-nav" aria-label="Mobile navigation">
-          {[...links, [t('nav.profile', 'Profile'), '/profile'], [t('nav.login', 'Sign in'), '/login']].map(([name, path]) => (
+          {[...links, ...(user ? [[t('nav.profile', 'Profile'), '/profile']] : [])].map(([name, path]) => (
             <Link key={path} href={path} onClick={() => setMenu(false)}>
               {name}
             </Link>

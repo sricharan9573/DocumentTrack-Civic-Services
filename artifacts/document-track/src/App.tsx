@@ -4,9 +4,9 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
-import { AppProvider } from './context/AppContext';
+import { AppProvider, useApp } from './context/AppContext';
 import { LanguageProvider } from './i18n/LanguageContext';
-import { AppShell } from './components/shared';
+import { AppShell, LoadingState } from './components/shared';
 import {
   ApplicationFormPage, DashboardPage, HomePage, HowItWorksPage,
   LoginPage, NotFoundPage, ProfilePage, ServicesPage, SignupPage,
@@ -17,6 +17,22 @@ import { RecentActivityPage } from './pages/RecentActivityPage';
 const queryClient = new QueryClient();
 
 function Router() {
+  const { user, loadingAuth } = useApp();
+
+  if (loadingAuth) {
+    return <LoadingState />;
+  }
+
+  if (!user) {
+    return (
+      <RoutedErrorBoundary>
+        <AppShell>
+          <LoginPage />
+        </AppShell>
+      </RoutedErrorBoundary>
+    );
+  }
+
   return (
     <RoutedErrorBoundary>
       <AppShell>
